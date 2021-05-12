@@ -8,7 +8,7 @@
 #define GRID_SIZE (1024ULL)
 #define N_BLKS  (GRID_SIZE/BLK_SIZE)
 
-typedef int32_t d_t;
+typedef int4 d_t;
 
 enum bench_type { READ = 0, WRITE = 1, MIXED = 2};
 
@@ -28,14 +28,14 @@ int main(int argc, char *argv[]) {
 
     cudaSetDeviceFlags(cudaDeviceMapHost);
 
-    int32_t * h_arr = nullptr;
-    int32_t * d_flag = nullptr;
+    d_t * h_arr = nullptr;
+    d_t * d_flag = nullptr;
 
 
     cuda_err_chk(cudaHostAlloc((void **)&h_arr,  num_elems * sizeof(d_t),  cudaHostAllocMapped));
     cuda_err_chk(cudaMalloc((void **) &d_flag, sizeof(d_t)));
 
-    int32_t * d_arr = nullptr;
+    d_t * d_arr = nullptr;
 
     cuda_err_chk(cudaHostGetDevicePointer((void **)&d_arr,  (void *) h_arr , 0));
 

@@ -33,9 +33,10 @@ template <unsigned BD, typename write_t>
 __global__ void gpu_write(write_t *ptr, const size_t bytes) {
     const size_t gx = blockIdx.x * BD + threadIdx.x;
     const size_t num_elems = bytes / sizeof(write_t);
+    int4 v;// = 0;
 #pragma unroll(5)
     for (size_t i = gx; i < num_elems; i += gridDim.x * BD) {
-        ptr[i] = gx;
+        ptr[i] = v;
     }
 }
 
@@ -44,10 +45,10 @@ __global__ void gpu_mix(data_t *ptr, data_t *flag, const size_t bytes) {
     const size_t gx = blockIdx.x * BD + threadIdx.x;
     const size_t wx = gx / 32;
     const size_t num_elems = bytes / sizeof(data_t);
-
+    int4 v;
     for (size_t i = gx; i < num_elems; i += gridDim.x * BD) {
         if (wx % 2)
-            ptr[i] = 0;
+            ptr[i] = v;// = 0;
         else {
             data_t t;
             t = ptr[i];
