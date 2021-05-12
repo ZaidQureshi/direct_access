@@ -5,7 +5,7 @@
 #include "kernels.hu"
 
 #define BLK_SIZE (128)
-#define GRID_SIZE (1024ULL*1024ULL)
+#define GRID_SIZE (1024ULL)
 #define N_BLKS  (GRID_SIZE/BLK_SIZE)
 
 typedef int32_t d_t;
