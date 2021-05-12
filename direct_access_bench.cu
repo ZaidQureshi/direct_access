@@ -8,7 +8,7 @@
 #define GRID_SIZE (1024ULL)
 #define N_BLKS  (GRID_SIZE/BLK_SIZE)
 
-typedef int4 d_t;
+typedef ulong4 d_t;
 
 enum bench_type { READ = 0, WRITE = 1, MIXED = 2};
 
