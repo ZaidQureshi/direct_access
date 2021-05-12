@@ -8,7 +8,7 @@
 #define GRID_SIZE (1024ULL)
 #define N_BLKS  (GRID_SIZE/BLK_SIZE)
 
-typedef ulong4 d_t;
+typedef uint32_t d_t;
 
 enum bench_type { READ = 0, WRITE = 1, MIXED = 2};
 
@@ -45,10 +45,10 @@ int main(int argc, char *argv[]) {
         gpu_read<BLK_SIZE, d_t><<<GRID_SIZE,BLK_SIZE>>>(d_arr, d_flag, num_elems * sizeof(d_t));
         break;
     case WRITE:
-        gpu_write<BLK_SIZE, d_t><<<GRID_SIZE,BLK_SIZE>>>(d_arr, num_elems * sizeof(d_t));
+        gpu_write<BLK_SIZE, d_t><<<GRID_SIZE,BLK_SIZE>>>(d_arr, 0, num_elems * sizeof(d_t));
         break;
     case MIXED:
-        gpu_mix<BLK_SIZE, d_t><<<GRID_SIZE,BLK_SIZE>>>(d_arr, d_flag, num_elems * sizeof(d_t));
+        gpu_mix<BLK_SIZE, d_t><<<GRID_SIZE,BLK_SIZE>>>(d_arr, d_flag, 0, num_elems * sizeof(d_t));
         break;
     default:
         std::cerr << "Please specify valid bench type\n";
