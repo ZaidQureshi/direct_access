@@ -15,7 +15,7 @@ inline void gpuAssert(int code, const char *file, int line, bool abort=false)
 }
 
 template <unsigned BD, typename read_t>
-__global__ void gpu_read(const read_t *__restrict__ ptr, read_t * __restrict__ flag, const size_t bytes) {
+__global__ void gpu_read(const read_t * ptr, read_t * flag, const size_t bytes) {
     const size_t gx = blockIdx.x * BD + threadIdx.x;
     const size_t num_elems = bytes / sizeof(read_t);
 
@@ -30,7 +30,7 @@ __global__ void gpu_read(const read_t *__restrict__ ptr, read_t * __restrict__ f
 }
 
 template <unsigned BD, typename write_t>
-__global__ void gpu_write(write_t *__restrict__ ptr, const write_t v, const size_t bytes) {
+__global__ void gpu_write(write_t * ptr, const write_t v, const size_t bytes) {
     const size_t gx = blockIdx.x * BD + threadIdx.x;
     const size_t num_elems = bytes / sizeof(write_t);
     //ulong4 v = {0,0,0,0};// = 0;
@@ -42,7 +42,7 @@ __global__ void gpu_write(write_t *__restrict__ ptr, const write_t v, const size
 }
 
 template <unsigned BD, typename data_t>
-__global__ void gpu_mix(data_t * __restrict__ ptr, data_t * __restrict__ flag, const data_t v, const size_t bytes) {
+__global__ void gpu_mix(data_t * ptr, data_t * flag, const data_t v, const size_t bytes) {
     const size_t gx = blockIdx.x * BD + threadIdx.x;
     const size_t wx = gx / 32;
     const size_t num_elems = bytes / sizeof(data_t);
