@@ -29,6 +29,19 @@ __global__ void gpu_read(const read_t * ptr, read_t * flag, const size_t bytes) 
     }
 }
 
+template <unsigned BD, typename data_t>
+__global__ void gpu_kern(data_t * __restrict__ dst, data_t * __restrict__ src, const size_t bytes) {
+    const size_t gx = blockIdx.x * BD + threadIdx.x;
+    const size_t num_elems = bytes / sizeof(data_t);
+    //ulong4 v = {0,0,0,0};// = 0;
+#pragma unroll(5)
+    for (size_t i = gx; i < num_elems; i += gridDim.x * BD) {
+        dst[i] = src[i];
+    }
+//printf("here\n");
+}
+
+
 template <unsigned BD, typename write_t>
 __global__ void gpu_write(write_t * ptr, const write_t v, const size_t bytes) {
     const size_t gx = blockIdx.x * BD + threadIdx.x;

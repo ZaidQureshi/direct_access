@@ -36,16 +36,21 @@ int main(int argc, char *argv[]) {
     cuda_err_chk(cudaMalloc((void **) &d_flag, sizeof(d_t)));
 
     d_t * d_arr = nullptr;
+    d_t * d_arr2 = nullptr;
+
+    cuda_err_chk(cudaMalloc((void **) &d_arr2, num_elems * sizeof(d_t)));
 
     cuda_err_chk(cudaHostGetDevicePointer((void **)&d_arr,  (void *) h_arr , 0));
 
     auto start = std::chrono::high_resolution_clock::now();
     switch (type) {
     case READ:
-        gpu_read<BLK_SIZE, d_t><<<GRID_SIZE,BLK_SIZE>>>(d_arr, d_flag, num_elems * sizeof(d_t));
+        gpu_kern<BLK_SIZE, d_t><<<GRID_SIZE,BLK_SIZE>>>(d_arr2, d_arr, num_elems * sizeof(d_t));
+        //gpu_read<BLK_SIZE, d_t><<<GRID_SIZE,BLK_SIZE>>>(d_arr, d_flag, num_elems * sizeof(d_t));
         break;
     case WRITE:
-        gpu_write<BLK_SIZE, d_t><<<GRID_SIZE,BLK_SIZE>>>(d_arr, 0, num_elems * sizeof(d_t));
+        gpu_kern<BLK_SIZE, d_t><<<GRID_SIZE,BLK_SIZE>>>(d_arr, d_arr2, num_elems * sizeof(d_t));
+        //gpu_write<BLK_SIZE, d_t><<<GRID_SIZE,BLK_SIZE>>>(d_arr, 0, num_elems * sizeof(d_t));
         break;
     case MIXED:
         gpu_mix<BLK_SIZE, d_t><<<GRID_SIZE,BLK_SIZE>>>(d_arr, d_flag, 0, num_elems * sizeof(d_t));
